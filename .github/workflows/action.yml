@@ -16,11 +16,14 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
+    - run:   echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
+      shell: bash
+
     - name: Build
       run: |
-        env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_WORKSPACE-windows-amd64 cmd/$GITHUB_WORKSPACE/main.go
-        env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_WORKSPACE-linux-amd64 cmd/$GITHUB_WORKSPACE/main.go
-        env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_WORKSPACE-darwin-amd64 cmd/$GITHUB_WORKSPACE/main.go
+        env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_REPOSITORY-windows-amd64 cmd/$GITHUB_REPOSITORY/main.go
+        env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_REPOSITORY-linux-amd64 cmd/$GITHUB_REPOSITORY/main.go
+        env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_REPOSITORY-darwin-amd64 cmd/$GITHUB_REPOSITORY/main.go
       
     - name: Upload artifact
       uses: actions/upload-artifact@v2
