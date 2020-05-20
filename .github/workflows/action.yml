@@ -1,0 +1,30 @@
+name: Go build and release
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_WORKSPACE-windows-amd64 cmd/$GITHUB_WORKSPACE/main.go
+        env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_WORKSPACE-linux-amd64 cmd/$GITHUB_WORKSPACE/main.go
+        env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_WORKSPACE-darwin-amd64 cmd/$GITHUB_WORKSPACE/main.go
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        # Directory containing files to upload
+        path: build/*
+
