@@ -21,9 +21,9 @@ jobs:
 
     - name: Build
       run: |
-        env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_REPOSITORY-windows-amd64 cmd/$GITHUB_REPOSITORY/main.go
-        env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_REPOSITORY-linux-amd64 cmd/$GITHUB_REPOSITORY/main.go
-        env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/$GITHUB_REPOSITORY-darwin-amd64 cmd/$GITHUB_REPOSITORY/main.go
+        env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-windows-amd64 cmd/$REPOSITORY_NAME/main.go
+        env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-linux-amd64 cmd/$REPOSITORY_NAME/main.go
+        env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-darwin-amd64 cmd/$REPOSITORY_NAME/main.go
       
     - name: Upload artifact
       uses: actions/upload-artifact@v2
