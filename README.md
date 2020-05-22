@@ -1,6 +1,6 @@
 # Go Decrypt Jenkins
 
-This tools will try to automatically find and decrypt all the interesting bits from a jenkins backup folder.
+This tool will try to automatically find and decrypt all the interesting bits from a jenkins backup folder.
 
 Features:
 
@@ -30,5 +30,13 @@ You can also specify the `credentials.xml`, `master.key`, and `hudson.util.Secre
 % ./go-decrypt-jenkins -m master.key -s hudson.util.Secret -c credentials.xml
 ```
 
-Be advised this is a bad project to learn go, so maybe don't run on a critical server.
+## Installing
 
+[Download](https://github.com/thesubtlety/go-decrypt-jenkins/releases) a binary
+
+or
+
+`go install github.com/thesubtlety/go-decrypt-jenkins/cmd/go-decrypt-jenkins`
+
+
+Be advised this is a bad project to learn go, so maybe don't run on a critical server.
