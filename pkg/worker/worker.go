@@ -108,7 +108,7 @@ func Search() {
 	}
 
 	if config.Masterkeyfile == "" {
-		fmt.Print("No master.key or hudson.util.Secret found, exiting...")
+		fmt.Println("No master.key or hudson.util.Secret found, exiting...")
 		return
 	}
 
