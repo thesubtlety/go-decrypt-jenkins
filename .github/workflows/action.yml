@@ -21,6 +21,7 @@ jobs:
 
     - name: Build
       run: |
+        go get github.com/$GITHUB_REPOSITORY/cmd/$REPOSITORY_NAME
         env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-windows-amd64 cmd/$REPOSITORY_NAME/main.go
         env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-linux-amd64 cmd/$REPOSITORY_NAME/main.go
         env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-darwin-amd64 cmd/$REPOSITORY_NAME/main.go
