@@ -43,8 +43,15 @@ func main() {
 	}
 
 	//exit if missing master, secret, credfile
-	if config.Masterkeyfile == "" || config.Secretkeyfile == "" || config.Credfile == "" {
+	if config.Masterkeyfile == "" || config.Credfile == "" && (config.Secretbytesfile == "" || config.Secretkeyfile == "" ) {
 		usage()
+	}
+
+	//regex decrypt single file with secretbytes
+	if config.Secretbytesfile != "" {
+		sbk := jenkinscrypto.Initsecretbytesdecrypt(config.Secretbytesfile, config.Masterkeyfile)
+		worker.Brute(sbk)
+		return
 	}
 
 	//regex decrypt single file

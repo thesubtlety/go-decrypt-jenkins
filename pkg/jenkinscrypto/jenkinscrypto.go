@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"unicode"
 )
 
 // reference
@@ -53,11 +54,14 @@ func Decryptv1(k []byte, crypted string) (string, error) {
 
 	magic := "::::MAGIC::::"
 	if !strings.Contains(string(secret), magic) {
-		return "", errors.New("Unable to decrypt, no magic found in v1 secret")
+		return "", errors.New("unable to decrypt, no magic found in v1 secret")
 	}
 	secrets := strings.Replace(string(secret), magic, "", 1)
 
 	decrypted := strings.TrimSpace(secrets)
+	decrypted = strings.TrimFunc(decrypted, func(r rune) bool {
+		return !unicode.IsGraphic(r)
+	})
 	return string(decrypted), nil
 }
 
@@ -101,6 +105,9 @@ func Decrypt(k []byte, crypted string) (string, error) {
 	mode.CryptBlocks(cryptedbytes, cryptedbytes)
 
 	decrypted := strings.TrimSpace(string(cryptedbytes))
+	decrypted = strings.TrimFunc(decrypted, func(r rune) bool {
+		return !unicode.IsGraphic(r)
+	})
 	return decrypted, nil
 }
 
@@ -114,7 +121,7 @@ func Decryptmasterkey(masterkey string, encsecretkeyfile []byte) ([]byte, error)
 	}
 
 	if !strings.Contains(string(secret), ":::MAGIC:::") {
-		return nil, errors.New("Unable to decrypt, no magic found in hudson.util.Secret")
+		return nil, errors.New("unable to decrypt, no magic found in hudson.util.Secret")
 	}
 	secret = secret[:16]
 	return secret, nil
@@ -126,13 +133,13 @@ func Initdecrypt(hsecretfile string, mkeyfile string) []byte {
 
 	hudsonsecret, err := ioutil.ReadFile(hsecretfile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Printf("error reading hudson.util.Secret file '%s':%s\n", hsecretfile, err)
 		os.Exit(1)
 	}
 
 	masterkey, err := ioutil.ReadFile(mkeyfile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Printf("error reading master.key file '%s':%s\n", mkeyfile, err)
 		os.Exit(1)
 	}
 

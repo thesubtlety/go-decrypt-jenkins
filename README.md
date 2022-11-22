@@ -10,6 +10,8 @@ Features:
 * Supports additional Jenkins plugins with `-p`, e.g. `-p jenkins.security.ApiTokenProperty`
 * Dumps user password hashes and tokens
 
+## Usage
+
 ```
 % ./go-decrypt-jenkins -d jenkinsbackup/
 scope: GLOBAL
@@ -37,6 +39,3 @@ You can also specify the `credentials.xml`, `master.key`, and `hudson.util.Secre
 or
 
 `go install github.com/thesubtlety/go-decrypt-jenkins/cmd/go-decrypt-jenkins`
-
-
-Be advised this is a bad project to learn go, so maybe don't run on a critical server.

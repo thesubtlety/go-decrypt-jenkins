@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"unicode"
 
 	"github.com/thesubtlety/go-decrypt-jenkins/pkg/config"
 	"github.com/thesubtlety/go-decrypt-jenkins/pkg/jenkinscrypto"
@@ -49,10 +50,18 @@ func Brute(k []byte) {
 	}
 
 	matches := re.FindAll(cf, -1)
+	var decrypted string
 	for _, v := range matches {
-		decrypted, _ := jenkinscrypto.Decrypt(k, string(v))
+		if config.Secretbytesfile != "" {
+			decrypted, _ = jenkinscrypto.Decryptsecretbytes(k, string(v))
+		} else {
+			decrypted, _ = jenkinscrypto.Decrypt(k, string(v))
+		}
+		decrypted = strings.TrimFunc(decrypted, func(r rune) bool {
+			return !unicode.IsGraphic(r)
+		})
 		if len(decrypted) > 0 {
-			fmt.Printf("%s\n", decrypted)
+			fmt.Printf("\n%s\n", decrypted)
 		}
 	}
 }

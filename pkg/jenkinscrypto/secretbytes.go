@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"unicode"
 )
 
 //https://github.com/jenkinsci/credentials-plugin/blob/master/src/main/java/com/cloudbees/plugins/credentials/CredentialsConfidentialKey.java#L150
@@ -51,7 +52,7 @@ func Decryptsecretbytes(secretbyteskey []byte, crypted string) (string, error) {
 	saltsize := 8
 
 	if crypted == "" || (len(cryptedbytes) < saltsize+1) {
-		return "", errors.New("Error decrypting, invalid string")
+		return "", errors.New("error decrypting, invalid string")
 	}
 
 	salt := cryptedbytes[:saltsize]
@@ -74,6 +75,9 @@ func Decryptsecretbytes(secretbyteskey []byte, crypted string) (string, error) {
 	secret := crypteddata[:]
 
 	decrypted := strings.TrimSpace(string(secret))
+	decrypted = strings.TrimFunc(decrypted, func(r rune) bool {
+		return !unicode.IsGraphic(r)
+	})
 	return decrypted, nil
 }
 
@@ -82,13 +86,13 @@ func Decryptsecretbytes(secretbyteskey []byte, crypted string) (string, error) {
 func Initsecretbytesdecrypt(secretbyteskeyfile string, mkeyfile string) []byte {
 	secretbyteskey, err := ioutil.ReadFile(secretbyteskeyfile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Printf("error reading SecretBytes.KEY file '%s':%s\n", secretbyteskeyfile, err)
 		os.Exit(1)
 	}
 
 	masterkey, err := ioutil.ReadFile(mkeyfile)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Printf("error reading  master.key file '%s':%s\n", mkeyfile, err)
 		os.Exit(1)
 	}
 
