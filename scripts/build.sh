@@ -11,7 +11,7 @@ fi
 package_split=(${package//\// })
 package_name=${package_split[-1]}
 
-platforms=("windows/amd64" "linux/amd64" "darwin/amd64")
+platforms=("windows/amd64" "linux/amd64" "darwin/amd64" "darwin/arm64")
 
 for platform in "${platforms[@]}"
 do

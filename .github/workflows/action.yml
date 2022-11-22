@@ -7,25 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Set up Go 1.13
+    - name: Set up Go 1.18
       uses: actions/setup-go@v1
       with:
-        go-version: 1.13
+        go-version: 1.18
       id: go
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
-    - run:   echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
-      shell: bash
-
     - name: Build
       run: |
-        go get github.com/$GITHUB_REPOSITORY/cmd/$REPOSITORY_NAME
-        env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-windows-amd64 cmd/$REPOSITORY_NAME/main.go
-        env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-linux-amd64 cmd/$REPOSITORY_NAME/main.go
-        env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/$REPOSITORY_NAME-darwin-amd64 cmd/$REPOSITORY_NAME/main.go
-      
+        go get github.com/$GITHUB_REPOSITORY/cmd/${GITHUB_REPOSITORY#*/}
+        env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o build/${GITHUB_REPOSITORY#*/}-windows-amd64 cmd/${GITHUB_REPOSITORY#*/}/main.go
+        env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o build/${GITHUB_REPOSITORY#*/}-linux-amd64 cmd/${GITHUB_REPOSITORY#*/}/main.go
+        env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o build/${GITHUB_REPOSITORY#*/}-darwin-amd64 cmd/${GITHUB_REPOSITORY#*/}/main.go
+        env GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o build/${GITHUB_REPOSITORY#*/}-darwin-arm64 cmd/${GITHUB_REPOSITORY#*/}/main.go
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
