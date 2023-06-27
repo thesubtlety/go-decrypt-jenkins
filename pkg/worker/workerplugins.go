@@ -8,23 +8,33 @@ import (
 //this and tokens logic based on https://github.com/bstapes/jenkins-decrypt/blob/master/decrypt.py
 var Plugins = []string{
 	"com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl",
+	"com.cloudbees.jenkins.plugins.awscredentials.AWSCredentialsImpl",
 	"com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey",
 	"com.cloudbees.plugins.credentials.SystemCredentialsProvider",
+
+	"com.datapipe.jenkins.vault.credentials.VaultAppRoleCredential",
+
 	"com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper/varPasswordPairs/varPasswordPair[@password]",
 	"com.michelin.plugins.plaincredentials.impl/varPasswordPairs/varPasswordPair[@password]",
 
+	"hudson.plugins.ec2.EC2Cloud",
 	"hudson.security.HudsonPrivateSecurityRealm_-Details",
 	"hudson.scm.CVSSCM.xml",
 	"hudson.tools.JDKInstaller.xml",
 	"scm[@class='hudson.plugins.perforce.PerforceSCM']",
 
+	"io.jenkins.plugins.oidc__provider.IdTokenFileCredentials",
+
 	"jenkins.security.ApiTokenProperty",
 	"jenkins.security.plugins.ldap.LDAPConfiguration",
 
 	"org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl",
+	"org.jenkinsci.plugins.docker.commons.credentials.DockerServerCredentials",
+	"org.jenkinsci.plugins.github__branch__source.GitHubAppCredentials",
 	"org.jenkinsci.plugins.GithubSecurityRealm",
 	"org.jenkinsci.plugins.GithubAuthorizationStrategy",
 	"org.jenkinsci.plugins.googlelogin.GoogleOAuth2SecurityRealm",
+	"org.jenkinsci.plugins.kubernetes.credentials.OpenShiftBearerTokenCredentialImpl",
 	"org.jenkinsci.plugins.p4.credentials.P4PasswordImpl",
 	"org.jenkinsci.plugins.plaincredentials.impl.FileCredentialsImpl",
 	"org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl",
